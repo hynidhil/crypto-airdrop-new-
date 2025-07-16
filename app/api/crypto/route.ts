@@ -1,30 +1,28 @@
+import { NextRequest } from "next/server";
+
 export async function GET(req: NextRequest) {
-  const apiKey = process.env.COINAPI_KEY;
-  const apiKey = process.env.COINAPI_KEY;
-  
-  if (!apiKey) {
-    console.error("COINAPI_KEY environment variable is not set");
-    return new Response(JSON.stringify({ error: "API key not configured", status: 500 }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
-    });
-  }
-  
-  // Check if API key is configured
-  if (!apiKey || apiKey === "your_coinmarketcap_api_key_here") {
-    return new Response(JSON.stringify({ 
-      error: "CoinMarketCap API key not configured. Please add COINAPI_KEY to your environment variables.",
-      status: 401 
-    }), {
-      status: 401,
+  const url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=50&convert=USD";
+  const apiKey = process.env.COINAPI_KEY || "";
+  const res = await fetch(url, {
+    headers: {
+      "X-CMC_PRO_API_KEY": apiKey,
+      "Accept": "application/json"
+    } as Record<string, string>
+  });
+
+  const data = await res.json();
+
+  // If CoinMarketCap returns an error, forward it to the frontend
+  if (res.status !== 200) {
+    console.error("CoinMarketCap error:", data);
+    return new Response(JSON.stringify({ error: data.status?.error_message || data.error || data.message || 'Unknown error from CoinMarketCap', status: res.status }), {
+      status: res.status,
       headers: { "Content-Type": "application/json" }
     });
   }
 
-  const url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=50&convert=USD";
-  const res = await fetch(url, {
-    headers: {
-      "X-CMC_PRO_API_KEY": apiKey,
-    }
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: { "Content-Type": "application/json" }
   });
-}
+} 
