@@ -27,6 +27,6 @@ const fetchCoins = async () => {
 
   useEffect(() => {
     fetchCoins();
-    const interval = setInterval(fetchCoins, 1800000); // Refresh every 30 minutes
+    const interval = setInterval(fetchCoins, 3600000); // Refresh every 60 minutes
     return () => clearInterval(interval);
   }, []);

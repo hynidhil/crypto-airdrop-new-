@@ -1,5 +1,14 @@
 export async function GET(req: NextRequest) {
   const apiKey = process.env.COINAPI_KEY;
+  const apiKey = process.env.COINAPI_KEY;
+  
+  if (!apiKey) {
+    console.error("COINAPI_KEY environment variable is not set");
+    return new Response(JSON.stringify({ error: "API key not configured", status: 500 }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
   
   // Check if API key is configured
   if (!apiKey || apiKey === "your_coinmarketcap_api_key_here") {
