@@ -21,4 +21,10 @@
 +      }
 +      
        const coinsArray = data.data || [];
-       setCoins(
+       setCoins(coinsArray);
+     } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
