@@ -1,0 +1,6 @@
+@@ .. @@
+ NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+ NEXT_PUBLIC_ADMIN_EMAIL=admin@claimex.com
++COINAPI_KEY=your_coinmarketcap_api_key_here
+ ```
