@@ -50,7 +50,7 @@ export const createAirdrop = async (airdrop: Omit<Airdrop, 'id' | 'created_at'>)
     .from('airdrops')
     .insert([airdrop])
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
   return data as Airdrop;
@@ -62,7 +62,7 @@ export const updateAirdrop = async (id: string, airdrop: Partial<Airdrop>) => {
     .update(airdrop)
     .eq('id', id)
     .select()
-    .single();
+    .maybeSingle();
   if (error) throw error;
   return data as Airdrop;
 };
